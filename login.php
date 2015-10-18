@@ -1,10 +1,18 @@
 <!-- This page is created for user login-->
 <html>
 	<head>
-	  <link rel="stylesheet" href="//code.jquery.com/ui/1.11.2/themes/smoothness/jquery-ui.css">
-	  <script src="//code.jquery.com/jquery-1.10.2.js"></script>
-	  <script src="//code.jquery.com/ui/1.11.2/jquery-ui.js"></script>
-	  <link rel="stylesheet" href="/resources/demos/style.css">
+	  	<link rel="stylesheet" href="//code.jquery.com/ui/1.11.2/themes/smoothness/jquery-ui.css">
+	 	<script src="//code.jquery.com/jquery-1.10.2.js"></script>
+	  	<script src="//code.jquery.com/ui/1.11.2/jquery-ui.js"></script>
+	  	<link rel="stylesheet" href="/resources/demos/style.css">
+
+	  	<!-- Bootstrap core CSS -->
+	    <link href="bootstrap-3.3.5/css/bootstrap.min.css" rel="stylesheet">
+	    <!-- Bootstrap theme -->
+	    <link href="bootstrap-3.3.5/css/bootstrap-theme.min.css" rel="stylesheet">
+	    <link href="css/theme.css" rel"stylesheet">
+
+
 	  <script>
 	  $(function() {
 	    $( "#dialog" ).dialog({
@@ -36,7 +44,7 @@
 						<tr>
 							<td>&nbsp;</td>
 							<td>&nbsp;</td>
-							<td><input type="submit" name="Submit" value="Login"></td>
+							<td><input type="submit" name="Submit" class="btn btn-primary" value="Login"></td>
 						</tr>
 						<td>
 					</table>
@@ -58,15 +66,3 @@
 		echo "<script type='text/javascript'>alert('Wrong username or password, please try again');</script>";
 	}
 ?>
-
-
-
-
-
-<body>
- 
-
- 
- 
-</body>
-</html>
