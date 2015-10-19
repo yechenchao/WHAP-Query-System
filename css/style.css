@@ -8,7 +8,6 @@ body {
 	font-family: arial;
 	font-size: 12px;
 }
-
 /* Default resizable box size */
 #resizable { width: 350px; height: 150px; padding: -10px; }
 
@@ -35,23 +34,11 @@ body {
 	padding: 10px;
 	min-height: 100px;
 }
-.footer {
-	padding: 10px;
-	text-align: right;
-}
-.footer a {
-	color: #999999;
-	text-decoration: none;
-}
-.footer a:hover {
-	text-decoration: underline;
-}
 .label_div {
 	width: 120px;
 	float: left;
 	line-height: 28px;
 }
-
 .input_container {
 	height: 30px;
 	float: left;
@@ -77,7 +64,6 @@ body {
 .input_container ul li:hover {
 	background: #eaeaea;
 }
-
 #question_list{
 	display: none;
 }
@@ -85,7 +71,6 @@ body {
 #textbox_header{
 	padding-left: 12px;
 }
-
 /* Result table style */
 .ResultTable {
 	margin:0px;padding:0px;
@@ -159,7 +144,6 @@ body {
 		background:-o-linear-gradient(bottom, #0057af 5%, #0057af 100%);	background:-webkit-gradient( linear, left top, left bottom, color-stop(0.05, #0057af), color-stop(1, #0057af) );
 	background:-moz-linear-gradient( center top, #0057af 5%, #0057af 100% );
 	filter:progid:DXImageTransform.Microsoft.gradient(startColorstr="#0057af", endColorstr="#0057af");	background: -o-linear-gradient(top,#0057af,0057af);
-
 	background-color:#0057af;
 	border:0px solid #ffffff;
 	text-align:center;
@@ -182,10 +166,6 @@ body {
 .ResultTable tr:first-child td:last-child{
 	border-width:0px 0px 1px 1px;
 }
-
-
-
-
 body{font-family: "Helvetica Neue", HelveticaNeue, Helvetica, Arial, sans-serif;font-size: 12px;background-color: #CCCCCC;}
 .float-clear{
 	clear:both;
@@ -193,15 +173,6 @@ body{font-family: "Helvetica Neue", HelveticaNeue, Helvetica, Arial, sans-serif;
 .float-left{
 	float:left;
 }
-
-/* Div outer for index.php background */
-#outer {
-	margin: 0 auto;
-	width: 1000px;
-	border-top: #333 2px solid;
-	background-color: #FFFFFF;
-}
-
 /* Variable Box style */
 .item input[type="text"] {
 	padding: 5px;
@@ -212,19 +183,14 @@ body{font-family: "Helvetica Neue", HelveticaNeue, Helvetica, Arial, sans-serif;
 .item input[type="checkbox"] {
 	margin: 10px;
 }
-
-
 #header div{
-	padding: 20px 5px 15px;
+	padding: 10px;
 	margin: 0px 10px;
 }
 .col-heading{
-	width:150px;font-size:16px;
+	width:150px;
+	font-size:16px;
 	font-weight:bold;
-}
-.footer{
-	padding:10px; background:#333;
-	margin-top:20px;
 }
 .btn-action{
 	padding:10px;
@@ -234,7 +200,6 @@ body{font-family: "Helvetica Neue", HelveticaNeue, Helvetica, Arial, sans-serif;
 	border:#CCCCCC 1px solid; 
 	border-radius: 4px;
 }
-
 /* Submit button style */
 input[type="submit"]{
 	padding:5px 20px; 
@@ -243,4 +208,3 @@ input[type="submit"]{
 	background-color:#09f;
 	color:#fff;
 }
-
