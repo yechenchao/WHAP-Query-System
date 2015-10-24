@@ -3,23 +3,30 @@
 	padding: 0;
 }
 body {
-	padding: 10px;
 	text-align: left;
 	font-family: arial;
 	font-size: 12px;
 }
 /* Default resizable box size */
-#resizable { width: 350px; height: 150px; padding: -10px; }
 
-.container {
-	width: 1000px;
-	height: auto;
-	background: #ffffff;
-	border: 1px solid #cccccc;
-	border-radius: 10px;
-	margin: auto;
-	text-align: left;
+#cat-select {
+	width: 300px; 
+	height: 200px;
 }
+
+#cat-resizable { 
+	width: 300px; 
+	height: 200px; 
+}
+
+#tab-container {
+	padding-top: 20px;
+}
+
+#selector_container {
+	padding-top: 10px;
+}
+
 .header {
 	padding: 10px;
 }
@@ -40,8 +47,8 @@ body {
 	line-height: 28px;
 }
 .input_container {
-	height: 30px;
-	float: left;
+	padding-top: 20px;
+	height: 50px;
 }
 .input_container input {
 	height: 20px;
@@ -66,6 +73,7 @@ body {
 }
 #question_list{
 	display: none;
+	margin-top: 20px;
 }
 
 #textbox_header{

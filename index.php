@@ -129,368 +129,381 @@ header("location:login.php");
 </head>
 
 <body>
-	<div id="container">
-		<div id="header">
-			<div>
+	<!-- Upper container -->
+	<nav class="navbar navbar-inverse navbar-fixed-top">
+		<div class="container">
+			<div class="navbar-header">
+			<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-cpntrols="navbar">
+				<span class="sr-only">Toggle navigation</span>
+				<span class="icon-bar"></span>
+	            <span class="icon-bar"></span>
+	            <span class="icon-bar"></span>
+			</button>
+			<a class="navbar-brand" href='#'>WHAP Query System</a>
+			</div>
+			<div id="navbar" class="navbar-collapse collapse">
 				<!-- Logout button -->
-				<form action="logout.php">
-					<button type="submit" class="btn btn-lg btn-primary">Sign Out</button>
+				<form class="navbar-form navbar-right" action="logout.php">
+					<button type="submit" class="btn btn-primary">Sign Out</button>
 				</form>
 			</div>
-			<div>
-			  <!-- Nav tabs -->
-			  <ul class="nav nav-tabs" role="tablist">
-			    <li role="presentation" class="active"><a href="#english" aria-controls="english" role="tab" data-toggle="tab">Search by English description</a></li>
-			    <li role="presentation"><a href="#category" aria-controls="profile" role="tab" data-toggle="tab">Select by category</a></li>
-			  </ul>
-			  <!-- Tab panes -->
-			  <div class="tab-content">
-			    <div role="tabpanel" class="tab-pane active" id="english">
-				    <div class="input_container">
-				    	<label>Search your question here: </label>
-				        <input type="text" id="variable_code" onkeyup="autocomplet()">
-				        <ul class="autocomplete" id="question_list"></ul> 
-				    </div>
-			    </div>
-			    <div role="tabpanel" class="tab-pane" id="category">
-				  	<div id="selector">
-				  		<!-- Select list for category list  -->
-						<select style = "margin-left: 6px; width: 250px; height: 200px" name="category" class="category" multiple="multiple">
-						<?php
-							$con=mysqli_connect('localhost',"root","root","whap");
-							$cateResults = mysqli_query($con,"select category from variableCategory");
-							while($row=mysqli_fetch_array($cateResults))
-								{
-									$category=$row['category'];
-									echo '<option value="'.$category.'">'.$category.'</option>';
-						 		} 
-					 	?>
-						</select>
-						<!-- Select list for variables  -->
-						<select id = "resizable" style = "width: 900px; height: 250px" name="varSelect" class="varSelect" multiple="multiple">
-						</select>
-						<!-- Div for displaying button of adding variables -->
-						<div name="result" class="result"></div>
-					</div>
-			    </div>
-			  </div>
-			</div>
 		</div>
+	</nav>
+	<div class="jumbotron">
+		<div id="tab-container" class="container">
+		  <!-- Nav tabs -->
+		  <ul class="nav nav-tabs" role="tablist">
+		    <li role="presentation" class="active"><a href="#english" aria-controls="english" role="tab" data-toggle="tab">Search by English description</a></li>
+		    <li role="presentation"><a href="#category" aria-controls="profile" role="tab" data-toggle="tab">Select by category</a></li>
+		  </ul>
+		  <!-- Tab panes -->
+		  <div class="tab-content">
+		    <div role="tabpanel" class="tab-pane active" id="english">
+			    <div class="input_container">
+			    	<div class="input-group">
+				        <input type="text" placeholder="Enter your question" class="form-control" id="variable_code" onkeyup="autocomplet()"  aria-describedby="sizing-addon2">
+				        <ul class="autocomplete" id="question_list"></ul>
+			        </div>
+			    </div>
+		    </div>
+		    <div role="tabpanel" class="tab-pane" id="category">
+			  	<div id="selector_container">
+			  		<!-- Select list for category list  -->
+					<select id="cat-select" name="category" class="category" multiple="multiple">
+					<?php
+						$con=mysqli_connect('localhost',"root","root","whap");
+						$cateResults = mysqli_query($con,"select category from variableCategory");
+						while($row=mysqli_fetch_array($cateResults))
+							{
+								$category=$row['category'];
+								echo '<option value="'.$category.'">'.$category.'</option>';
+					 		} 
+				 	?>
+					</select>
+					<!-- Select list for variables  -->
+					<select id = "cat-resizable" name="varSelect" class="varSelect" multiple="multiple">
+					</select>
+					<!-- Div for displaying button of adding variables -->
+					<div name="result" class="result"></div>
+				</div>
+		    </div>
+		  </div>
+	  </div>
+	</div>
 
-		<div class="body">
-			<!-- Form for posting variable list  -->
-			<form method="post">
-				<!-- Div for variable search textboxes  -->
-				<div id = "SearchBoxSet">
-					<div id = "textbox_header" class="item float-clear">
-						<h3>Variables Search Box: </h3>
-					</div>
-
-					<!-- Div for appending textboxes  -->
-					<div id = "varialbeBox">
-					</div>
+	<div class="body">
+		<!-- Form for posting variable list  -->
+		<form method="post">
+			<!-- Div for variable search textboxes  -->
+			<div id = "SearchBoxSet">
+				<div id = "textbox_header" class="item float-clear">
+					<h3>Variables Search Box: </h3>
 				</div>
 
-				<div class="btn-action float-clear">
-					<!--  Function buttons -->
-					<input type="button" name="add_item" value="Add Search Box" onClick="addMore('');" />
-					<input type="button" name="del_item" value="Delete Search Box" onClick="deleteRow();" />
-					<input type="button" name="clear_item" value="Clear Search Box" onClick="clearRow();" />
-					<input type="submit" name="time_series" onclick="setCookie()" value="Time Series Query" />
-					<input type="submit" name="patient_trajectory" onclick="setCookie()" value="Patient Trajectory Query" />
-				<?php
-					//Set current timezone
-					date_default_timezone_set("Australia/Melbourne");
+				<!-- Div for appending textboxes  -->
+				<div id = "varialbeBox">
+				</div>
+			</div>
 
-					//Save cureent timestamp to name files(e.g. csv, tsv)
-					$timestamp = date('d-m-Y_H-i-s');
-					$csvName = 'csv/'. $timestamp . '.csv';
-					$tsvName = 'tsv/'. $timestamp . '.tsv';
+			<div class="btn-action float-clear">
+				<!--  Function buttons -->
+				<input type="button" name="add_item" value="Add Search Box" onClick="addMore('');" />
+				<input type="button" name="del_item" value="Delete Search Box" onClick="deleteRow();" />
+				<input type="button" name="clear_item" value="Clear Search Box" onClick="clearRow();" />
+				<input type="submit" name="time_series" onclick="setCookie()" value="Time Series Query" />
+				<input type="submit" name="patient_trajectory" onclick="setCookie()" value="Patient Trajectory Query" />
+			<?php
+				//Set current timezone
+				date_default_timezone_set("Australia/Melbourne");
 
-					//Generate button html codes for download csv and histogram with dynamic filenames
-					$downloadButton = '<input type="button" value="Download CSV File" onclick="window.open(' . "'" . $csvName . "'" . ')" />';
-					$histogram = '<input type="button" value="View Histogram" onclick="window.open(' . "'histogram.php?tsv=" . $timestamp . "'" . ')" />';
+				//Save cureent timestamp to name files(e.g. csv, tsv)
+				$timestamp = date('d-m-Y_H-i-s');
+				$csvName = 'csv/'. $timestamp . '.csv';
+				$tsvName = 'tsv/'. $timestamp . '.tsv';
 
-					//Echo buttons
-					echo $downloadButton;
-					echo $histogram;
+				//Generate button html codes for download csv and histogram with dynamic filenames
+				$downloadButton = '<input type="button" value="Download CSV File" onclick="window.open(' . "'" . $csvName . "'" . ')" />';
+				$histogram = '<input type="button" value="View Histogram" onclick="window.open(' . "'histogram.php?tsv=" . $timestamp . "'" . ')" />';
 
-					//If time series button is clicked	
-					if(!empty($_POST["time_series"])) {
+				//Echo buttons
+				echo $downloadButton;
+				echo $histogram;
 
-						//Database configuration
-						$con = mysqli_connect('localhost',"root","root","whap");
-						//Count varialbe number
-						$itemCount = count($_POST["item_name"]);
-						$varCount = 0;
-						$queryValue = "";
+				//If time series button is clicked	
+				if(!empty($_POST["time_series"])) {
 
-						//Count varialbes in the list
+					//Database configuration
+					$con = mysqli_connect('localhost',"root","root","whap");
+					//Count varialbe number
+					$itemCount = count($_POST["item_name"]);
+					$varCount = 0;
+					$queryValue = "";
+
+					//Count varialbes in the list
+					for($i=0; $i<$itemCount; $i++) {
+						if(!empty($_POST["item_name"][$i])){
+							$varCount++;
+							if($queryValue!="") {
+								$queryValue .= ",";
+							}
+							//Create variable sentence for counting
+							$queryValue .= "'" . $_POST["item_name"][$i] . "'";
+						}
+					}
+
+					//Generate tsv file for histogram
+					$tsv = fopen($tsvName, "w");
+					//Write histogram header to tsv file
+					fwrite($tsv, "layer	number\n");
+
+					//Count results of each layer and write results to tsv file for histogram
+					$countQuery = "SELECT count(*) FROM layerData WHERE questionCode IN (";
+					$countLayers = mysqli_query($con,"select layer from layer_year order by id asc");
+					while($layer = mysqli_fetch_array($countLayers)){
+						$countSql = $countQuery . $queryValue .") AND layer = '" . $layer['layer'] . "'";
+						$variableCount = mysqli_query($con,"$countSql");
+						$countResult = mysqli_fetch_array($variableCount);
+						$count = $countResult[0];
+						fwrite($tsv, $layer['layer'] . "	" . $count . "\n");
+					}
+					fclose($tsvName);
+
+					//If textboxes are not empty
+					if($varCount != 0){
+						//Create csv file
+						$csv = fopen($csvName, "w");
+						
+						//Start creating result table
+						echo '<div class="ResultTable"><table><tr><td>Serial</td><td>Layer</td>';
+
+						//Start writing data to csv file
+						fwrite($csv, "Serial,Layer");
+
+						//Start generating SQL statement for time series query
+						$SQL_Header = "SELECT T1.serial, T1.layer";
+						$SQL_Body = "(SELECT serial,layer";
+						$SQL_Footer = '';
+						
+						//Using loop to add each varialbe to SQL statement
 						for($i=0; $i<$itemCount; $i++) {
-							if(!empty($_POST["item_name"][$i])){
+
+							$variable = $_POST["item_name"][$i];
+							$dataTypeSql = "SELECT valueType FROM questionCode_description WHERE questionCode = '" . $variable . "'";
+							$dataTypeResult = mysqli_fetch_array(mysqli_query($con,"$dataTypeSql"));
+
+							$SQL_Header .= ", ";
+							$SQL_Body .= ", ";
+							//When data type is date
+							if($dataTypeResult[0] == 1){
+								echo "<td>" . $variable . "</td>";
+								fwrite($csv, ",".$variable);
+								$SQL_Header .= 'T1.' . $variable;
+								$SQL_Body .= "GROUP_CONCAT(IF(questionCode='" . $variable . "',DATE_FORMAT(answerDate,'%d-%m-%Y'),NULL)) AS " . $variable;
+							}
+							//When data type is MCQ
+							else if($dataTypeResult[0] == 2){
+								//MCQ value would take 2 columns because it has answer code and answer value
 								$varCount++;
-								if($queryValue!="") {
-									$queryValue .= ",";
-								}
-								//Create variable sentence for counting
-								$queryValue .= "'" . $_POST["item_name"][$i] . "'";
+								echo "<td>" . $variable . "</td>";
+								echo "<td>" . $variable . "_Value" . "</td>";
+								fwrite($csv, ",".$variable);
+								fwrite($csv, ",".$variable."_Value");
+								$SQL_Header .= 'T1.' . $variable . ', ';
+								$SQL_Header .= $variable . '.value';
+								$SQL_Body .= "SUM(IF(questionCode='" . $variable . "',answerNumeric,NULL)) AS " . $variable;
+								$SQL_Footer .= 'INNER JOIN questionCode_value ' . $variable . ' ON (T1.' . $variable . '='. $variable . '.valueCode AND ' . $variable . ".questionCode = '" . $variable . "') ";
+							
+							}
+							//When data type is numberic
+							else if($dataTypeResult[0] == 3){
+								echo "<td>" . $variable . "</td>";
+								fwrite($csv, ",".$variable);
+								$SQL_Header .= 'T1.' . $variable;
+								$SQL_Body .= "SUM(IF(questionCode='" . $variable . "',answerNumeric,NULL)) AS " . $variable;
+							}
+							//When data type is string
+							else{
+								echo "<td>" . $variable . "</td>";
+								fwrite($csv, ",".$variable);
+								$SQL_Header .= 'T1.' . $variable;
+								$SQL_Body .= "GROUP_CONCAT(IF(questionCode='" . $variable . "',answerString,NULL)) AS " . $variable;
 							}
 						}
+						//The whole line finishes, add new line to csv
+						fwrite($csv, "\n");
 
-						//Generate tsv file for histogram
-						$tsv = fopen($tsvName, "w");
-						//Write histogram header to tsv file
-						fwrite($tsv, "layer	number\n");
+						$SQL_Header .= ' FROM';
+						$SQL_Body .= ' FROM layerData GROUP BY serial, layer) as T1 ';
+						
+						//Finalise SQL statement
+						$SQL = $SQL_Header . $SQL_Body . $SQL_Footer;
 
-						//Count results of each layer and write results to tsv file for histogram
-						$countQuery = "SELECT count(*) FROM layerData WHERE questionCode IN (";
-						$countLayers = mysqli_query($con,"select layer from layer_year order by id asc");
-						while($layer = mysqli_fetch_array($countLayers)){
-							$countSql = $countQuery . $queryValue .") AND layer = '" . $layer['layer'] . "'";
-							$variableCount = mysqli_query($con,"$countSql");
-							$countResult = mysqli_fetch_array($variableCount);
-							$count = $countResult[0];
-							fwrite($tsv, $layer['layer'] . "	" . $count . "\n");
+						//Query database
+						$queryResult = mysqli_query($con,"$SQL");
+						//Echo response from database into table
+						while($dataResult = mysqli_fetch_array($queryResult)){
+							echo '<tr>';
+							for($i=0; $i<$varCount+2; $i++) {
+								$column = "<td>".$dataResult[$i]. "</td>";
+								fwrite($csv, $dataResult[$i].",");
+								echo $column;
+							}
+							echo '</tr>';
+							fwrite($csv, "\n");
 						}
-						fclose($tsvName);
+						echo "</table></div>";
+						fclose($csvName);
+						mysql_close($con);
+					}
+				}
+				//When Patient Trajectory button is clicked
+				else if(!empty($_POST["patient_trajectory"])) {
+					//Database configuration
+					$con=mysqli_connect('localhost',"root","root","whap");
+					
+					//Count variables in the list
+					$itemCount = count($_POST["item_name"]);
 
-						//If textboxes are not empty
-						if($varCount != 0){
-							//Create csv file
-							$csv = fopen($csvName, "w");
+					//Create variable sentence for counting
+					$queryValue = "";
+					for($i=0; $i<$itemCount; $i++) {
+						if(!empty($_POST["item_name"][$i])) {
+							$itemValues++;
+							if($queryValue!="") {
+								$queryValue .= ",";
+							}
+							$queryValue .= "'" . $_POST["item_name"][$i] . "'";
+						}
+					}
+					//Create tsv file for histogram
+					$tsv = fopen($tsvName, "w");
+					fwrite($tsv, "layer	number\n");
+					//Count results of each layers and write to tsv file for histogram
+					$countQuery = "SELECT count(*) FROM layerData WHERE questionCode IN (";
+					$countLayers = mysqli_query($con,"select layer from layer_year order by id asc");
+					while($layer = mysqli_fetch_array($countLayers)){
+						$countSql = $countQuery . $queryValue . ") AND layer = '" . $layer['layer'] . "'";
+						$variableCount = mysqli_query($con,"$countSql");
+						$countResult = mysqli_fetch_array($variableCount);
+						$count = $countResult[0];
+						fwrite($tsv, $layer['layer'] . "	" . $count . "\n");
+					}
+					fclose($tsvName);
+
+					//If variable list is not empty
+					if($itemCount != null){
+						$varCount = 0;
+						$csv = fopen($csvName, "w");
+						echo '<div class="ResultTable"><table><tr><td>Serial</td>';
+						fwrite($csv, "Serial,");
+
+						//Start creating SQL statement
+						$SQL_Header = "SELECT T1.serial";
+						$SQL_Body = "(SELECT serial";
+						$SQL_Footer = '';
+
+						//Using loop to add each varialbe to SQL statement, echo table header, write header to csv
+						for($i=0; $i<$itemCount; $i++) {
+
+							$variable = $_POST["item_name"][$i];
+
+							//Fetch data type of variable
+							$dataTypeSql = "SELECT valueType FROM questionCode_description WHERE questionCode = '" . $variable . "'";
+							$dataTypeResult = mysqli_fetch_array(mysqli_query($con,"$dataTypeSql"));
+
+							//Fetch all layers
+							$layers = mysqli_query($con,"select layer from layer_year order by id asc");
 							
-							//Start creating result table
-							echo '<div class="ResultTable"><table><tr><td>Serial</td><td>Layer</td>';
-
-							//Start writing data to csv file
-							fwrite($csv, "Serial,Layer");
-
-							//Start generating SQL statement for time series query
-							$SQL_Header = "SELECT T1.serial, T1.layer";
-							$SQL_Body = "(SELECT serial,layer";
-							$SQL_Footer = '';
-							
-							//Using loop to add each varialbe to SQL statement
-							for($i=0; $i<$itemCount; $i++) {
-
-								$variable = $_POST["item_name"][$i];
-								$dataTypeSql = "SELECT valueType FROM questionCode_description WHERE questionCode = '" . $variable . "'";
-								$dataTypeResult = mysqli_fetch_array(mysqli_query($con,"$dataTypeSql"));
-
-								$SQL_Header .= ", ";
-								$SQL_Body .= ", ";
-								//When data type is date
-								if($dataTypeResult[0] == 1){
-									echo "<td>" . $variable . "</td>";
-									fwrite($csv, ",".$variable);
-									$SQL_Header .= 'T1.' . $variable;
-									$SQL_Body .= "GROUP_CONCAT(IF(questionCode='" . $variable . "',DATE_FORMAT(answerDate,'%d-%m-%Y'),NULL)) AS " . $variable;
-								}
-								//When data type is MCQ
-								else if($dataTypeResult[0] == 2){
-									//MCQ value would take 2 columns because it has answer code and answer value
+							//When data type is date
+							if($dataTypeResult[0] =='1'){
+								//Display date of birth once only
+								if($variable == 'ADMdob'){
 									$varCount++;
 									echo "<td>" . $variable . "</td>";
-									echo "<td>" . $variable . "_Value" . "</td>";
-									fwrite($csv, ",".$variable);
-									fwrite($csv, ",".$variable."_Value");
-									$SQL_Header .= 'T1.' . $variable . ', ';
-									$SQL_Header .= $variable . '.value';
-									$SQL_Body .= "SUM(IF(questionCode='" . $variable . "',answerNumeric,NULL)) AS " . $variable;
-									$SQL_Footer .= 'INNER JOIN questionCode_value ' . $variable . ' ON (T1.' . $variable . '='. $variable . '.valueCode AND ' . $variable . ".questionCode = '" . $variable . "') ";
-								
+									fwrite($csv, $variable . ",");
+									$SQL_Header .= ',T1.' . $variable;
+									$SQL_Body .= ",MIN(IF(questionCode='" . $variable . "',DATE_FORMAT(answerDate,'%d-%m-%Y'),NULL)) AS " . $variable;
 								}
-								//When data type is numberic
-								else if($dataTypeResult[0] == 3){
-									echo "<td>" . $variable . "</td>";
-									fwrite($csv, ",".$variable);
-									$SQL_Header .= 'T1.' . $variable;
-									$SQL_Body .= "SUM(IF(questionCode='" . $variable . "',answerNumeric,NULL)) AS " . $variable;
-								}
-								//When data type is string
 								else{
-									echo "<td>" . $variable . "</td>";
-									fwrite($csv, ",".$variable);
-									$SQL_Header .= 'T1.' . $variable;
-									$SQL_Body .= "GROUP_CONCAT(IF(questionCode='" . $variable . "',answerString,NULL)) AS " . $variable;
-								}
-							}
-							//The whole line finishes, add new line to csv
-							fwrite($csv, "\n");
-
-							$SQL_Header .= ' FROM';
-							$SQL_Body .= ' FROM layerData GROUP BY serial, layer) as T1 ';
-							
-							//Finalise SQL statement
-							$SQL = $SQL_Header . $SQL_Body . $SQL_Footer;
-
-							//Query database
-							$queryResult = mysqli_query($con,"$SQL");
-							//Echo response from database into table
-							while($dataResult = mysqli_fetch_array($queryResult)){
-								echo '<tr>';
-								for($i=0; $i<$varCount+2; $i++) {
-									$column = "<td>".$dataResult[$i]. "</td>";
-									fwrite($csv, $dataResult[$i].",");
-									echo $column;
-								}
-								echo '</tr>';
-								fwrite($csv, "\n");
-							}
-							echo "</table></div>";
-							fclose($csvName);
-							mysql_close($con);
-						}
-					}
-					//When Patient Trajectory button is clicked
-					else if(!empty($_POST["patient_trajectory"])) {
-						//Database configuration
-						$con=mysqli_connect('localhost',"root","root","whap");
-						
-						//Count variables in the list
-						$itemCount = count($_POST["item_name"]);
-
-						//Create variable sentence for counting
-						$queryValue = "";
-						for($i=0; $i<$itemCount; $i++) {
-							if(!empty($_POST["item_name"][$i])) {
-								$itemValues++;
-								if($queryValue!="") {
-									$queryValue .= ",";
-								}
-								$queryValue .= "'" . $_POST["item_name"][$i] . "'";
-							}
-						}
-						//Create tsv file for histogram
-						$tsv = fopen($tsvName, "w");
-						fwrite($tsv, "layer	number\n");
-						//Count results of each layers and write to tsv file for histogram
-						$countQuery = "SELECT count(*) FROM layerData WHERE questionCode IN (";
-						$countLayers = mysqli_query($con,"select layer from layer_year order by id asc");
-						while($layer = mysqli_fetch_array($countLayers)){
-							$countSql = $countQuery . $queryValue . ") AND layer = '" . $layer['layer'] . "'";
-							$variableCount = mysqli_query($con,"$countSql");
-							$countResult = mysqli_fetch_array($variableCount);
-							$count = $countResult[0];
-							fwrite($tsv, $layer['layer'] . "	" . $count . "\n");
-						}
-						fclose($tsvName);
-
-						//If variable list is not empty
-						if($itemCount != null){
-							$varCount = 0;
-							$csv = fopen($csvName, "w");
-							echo '<div class="ResultTable"><table><tr><td>Serial</td>';
-							fwrite($csv, "Serial,");
-
-							//Start creating SQL statement
-							$SQL_Header = "SELECT T1.serial";
-							$SQL_Body = "(SELECT serial";
-							$SQL_Footer = '';
-
-							//Using loop to add each varialbe to SQL statement, echo table header, write header to csv
-							for($i=0; $i<$itemCount; $i++) {
-
-								$variable = $_POST["item_name"][$i];
-
-								//Fetch data type of variable
-								$dataTypeSql = "SELECT valueType FROM questionCode_description WHERE questionCode = '" . $variable . "'";
-								$dataTypeResult = mysqli_fetch_array(mysqli_query($con,"$dataTypeSql"));
-
-								//Fetch all layers
-								$layers = mysqli_query($con,"select layer from layer_year order by id asc");
-								
-								//When data type is date
-								if($dataTypeResult[0] =='1'){
-									//Display date of birth once only
-									if($variable == 'ADMdob'){
-										$varCount++;
-										echo "<td>" . $variable . "</td>";
-										fwrite($csv, $variable . ",");
-										$SQL_Header .= ',T1.' . $variable;
-										$SQL_Body .= ",MIN(IF(questionCode='" . $variable . "',DATE_FORMAT(answerDate,'%d-%m-%Y'),NULL)) AS " . $variable;
-									}
-									else{
-										while($layer = mysqli_fetch_array($layers)){
-											$varCount++;
-											echo "<td>" . $layer['layer'] . "_" . $variable . "</td>";
-											fwrite($csv, $layer['layer'] . "_" . $variable . ",");
-											$SQL_Header .= ',T1.' . $layer['layer'] . '_' . $variable;
-											$SQL_Body .= ",GROUP_CONCAT(IF(questionCode='" . $variable . "' AND layer = '" . $layer['layer'] . "',DATE_FORMAT(answerDate,'%d-%m-%Y'),NULL)) AS " . $layer['layer'] . '_' . $variable;
-										}
-									}
-								}
-								//when data type is MCQ
-								else if($dataTypeResult[0] =='2'){
-
 									while($layer = mysqli_fetch_array($layers)){
-										//MCQ value would take 2 columns because it has answer code and answer value
-										$varCount = $varCount + 2;
+										$varCount++;
 										echo "<td>" . $layer['layer'] . "_" . $variable . "</td>";
 										fwrite($csv, $layer['layer'] . "_" . $variable . ",");
-										echo "<td>" . $layer['layer'] . "_" . $variable . "_Value</td>";
-										fwrite($csv, $layer['layer'] . "_" . $variable . "_Value" . ",");
-
 										$SQL_Header .= ',T1.' . $layer['layer'] . '_' . $variable;
-										$SQL_Header .= ',' . $layer['layer'] . '_' . $variable . '.value';
-										$SQL_Body .= ",SUM(IF(questionCode='" . $variable . "' AND layer = '" . $layer['layer'] . "',answerNumeric,NULL)) AS " . $layer['layer'] . '_' . $variable;
-										$newLayerVar = $layer['layer'] . '_' . $variable;
-										$SQL_Footer .= "LEFT OUTER JOIN questionCode_value " . $newLayerVar . " ON (T1." . $newLayerVar . "=" . $newLayerVar . ".valueCode AND " . $newLayerVar . ".questionCode = '" . $variable . "') ";
-									
-									}
-								}
-								//when data type is numeric
-								else if($dataTypeResult[0] =='3'){
-									while($layer = mysqli_fetch_array($layers)){
-										$varCount++;
-										echo "<td>" . $layer['layer'] . "_" . $variable . "</td>";
-										fwrite($csv,$layer['layer'] . "_" . $variable . ',');
-										$SQL_Header .= ',T1.' . $layer['layer'] . '_' . $variable;
-										$SQL_Body .= ",SUM(IF(questionCode='" . $variable . "' AND layer = '" . $layer['layer'] . "',answerNumeric,NULL)) AS " . $layer['layer'] . '_' . $variable;
-									}
-								}
-								//when data type is string
-								else{
-									while($layer = mysqli_fetch_array($layers)){
-										$varCount++;
-										echo "<td>" . $layer['layer'] . "_" . $variable . "</td>";
-										fwrite($csv,$layer['layer'] . "_" . $variable . ',');
-										$SQL_Header .= ',T1.' . $layer['layer'] . '_' . $variable;
-										$SQL_Body .= ",GROUP_CONCAT(IF(questionCode='" . $variable . "' AND layer = '" . $layer['layer'] . "',answerString,NULL)) AS " . $layer['layer'] . '_' . $variable;
+										$SQL_Body .= ",GROUP_CONCAT(IF(questionCode='" . $variable . "' AND layer = '" . $layer['layer'] . "',DATE_FORMAT(answerDate,'%d-%m-%Y'),NULL)) AS " . $layer['layer'] . '_' . $variable;
 									}
 								}
 							}
-							echo "</tr>";
-							fwrite($csv,"\n");
+							//when data type is MCQ
+							else if($dataTypeResult[0] =='2'){
 
-							$SQL_Header .= ' FROM';
-							$SQL_Body .= ' FROM layerData GROUP BY serial) as T1 ';
-							
-							//Finalise SQL statement
-							$SQL = $SQL_Header . $SQL_Body . $SQL_Footer;
-							$queryResult = mysqli_query($con,"$SQL");
+								while($layer = mysqli_fetch_array($layers)){
+									//MCQ value would take 2 columns because it has answer code and answer value
+									$varCount = $varCount + 2;
+									echo "<td>" . $layer['layer'] . "_" . $variable . "</td>";
+									fwrite($csv, $layer['layer'] . "_" . $variable . ",");
+									echo "<td>" . $layer['layer'] . "_" . $variable . "_Value</td>";
+									fwrite($csv, $layer['layer'] . "_" . $variable . "_Value" . ",");
 
-							//Create table with database response and write data to csv
-							while ($dataResult = mysqli_fetch_array($queryResult)) {
-								echo '<tr>';
-								for($i=0; $i<$varCount+1; $i++) {
-									$column = "<td>".$dataResult[$i]. "</td>";
-									echo $column;
-									fwrite($csv, $dataResult[$i].",");
+									$SQL_Header .= ',T1.' . $layer['layer'] . '_' . $variable;
+									$SQL_Header .= ',' . $layer['layer'] . '_' . $variable . '.value';
+									$SQL_Body .= ",SUM(IF(questionCode='" . $variable . "' AND layer = '" . $layer['layer'] . "',answerNumeric,NULL)) AS " . $layer['layer'] . '_' . $variable;
+									$newLayerVar = $layer['layer'] . '_' . $variable;
+									$SQL_Footer .= "LEFT OUTER JOIN questionCode_value " . $newLayerVar . " ON (T1." . $newLayerVar . "=" . $newLayerVar . ".valueCode AND " . $newLayerVar . ".questionCode = '" . $variable . "') ";
+								
 								}
-								echo '</tr>';
-								fwrite($csv, "\n");
 							}
-							echo "</table></div>";
-							fclose($csvName);
-							mysql_close($con);
+							//when data type is numeric
+							else if($dataTypeResult[0] =='3'){
+								while($layer = mysqli_fetch_array($layers)){
+									$varCount++;
+									echo "<td>" . $layer['layer'] . "_" . $variable . "</td>";
+									fwrite($csv,$layer['layer'] . "_" . $variable . ',');
+									$SQL_Header .= ',T1.' . $layer['layer'] . '_' . $variable;
+									$SQL_Body .= ",SUM(IF(questionCode='" . $variable . "' AND layer = '" . $layer['layer'] . "',answerNumeric,NULL)) AS " . $layer['layer'] . '_' . $variable;
+								}
+							}
+							//when data type is string
+							else{
+								while($layer = mysqli_fetch_array($layers)){
+									$varCount++;
+									echo "<td>" . $layer['layer'] . "_" . $variable . "</td>";
+									fwrite($csv,$layer['layer'] . "_" . $variable . ',');
+									$SQL_Header .= ',T1.' . $layer['layer'] . '_' . $variable;
+									$SQL_Body .= ",GROUP_CONCAT(IF(questionCode='" . $variable . "' AND layer = '" . $layer['layer'] . "',answerString,NULL)) AS " . $layer['layer'] . '_' . $variable;
+								}
+							}
 						}
+						echo "</tr>";
+						fwrite($csv,"\n");
+
+						$SQL_Header .= ' FROM';
+						$SQL_Body .= ' FROM layerData GROUP BY serial) as T1 ';
+						
+						//Finalise SQL statement
+						$SQL = $SQL_Header . $SQL_Body . $SQL_Footer;
+						$queryResult = mysqli_query($con,"$SQL");
+
+						//Create table with database response and write data to csv
+						while ($dataResult = mysqli_fetch_array($queryResult)) {
+							echo '<tr>';
+							for($i=0; $i<$varCount+1; $i++) {
+								$column = "<td>".$dataResult[$i]. "</td>";
+								echo $column;
+								fwrite($csv, $dataResult[$i].",");
+							}
+							echo '</tr>';
+							fwrite($csv, "\n");
+						}
+						echo "</table></div>";
+						fclose($csvName);
+						mysql_close($con);
 					}
-				?>
-				</div>
-			</form>
-		</div>
+				}
+			?>
+			</div>
+		</form>
 	</div>
-	
+
 </body>
 </html>

@@ -6,7 +6,6 @@ if($_POST['variable'])
 {
 	//Echo button for adding textboxes with selected variable 
 	$code=$_POST['variable'];
-	echo '<a>You have selected the variable, click Add to Search Box to continue</a><br />';
-	echo '<input type="button" name="add_item" value="Add to Search Box" onClick="addMore(' . "'" . $code . "'" . ');" />';
+	echo '<button type="button" class="btn btn-default" name="add_item" onClick="addMore(' . "'" . $code . "'" . ');" >Add to Search Box</button>';
 }
 ?>
