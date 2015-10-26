@@ -10,13 +10,11 @@ body {
 /* Default resizable box size */
 
 #cat-select1 {
-	width: 300px; 
-	height: 100px;
+	width:	200px;
 }
 
 #cat-select2 { 
-	width: 300px; 
-	height: 100px; 
+	width:	300px;
 }
 
 #tab-container {

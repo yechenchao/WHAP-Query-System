@@ -200,9 +200,9 @@ header("location:login.php");
 			    </div>
 		    </div>
 		    <div role="tabpanel" class="tab-pane" id="category">
-			  	<div id="selector_container">
+			  	<div class="form-inline" id="selector_container">
 			  		<!-- Select list for category list  -->
-					<select id="cat-select1" name="category" class="form-control" multiple="multiple">
+					<select multiple class="form-control" id="cat-select1" name="category">
 					<?php
 						$con=mysqli_connect('localhost',"root","root","whap");
 						$cateResults = mysqli_query($con,"select category from variableCategory");
@@ -213,9 +213,8 @@ header("location:login.php");
 					 		} 
 				 	?>
 					</select>
-
 					<!-- Select list for variables  -->
-					<select id="cat-select2" name="varSelect" class="form-control" multiple="multiple">
+					<select multiple class="form-control" id="cat-select2" name="varSelect">
 					</select>
 					<!-- Div for displaying button of adding variables -->
 					<div name="result" class="result"></div>
