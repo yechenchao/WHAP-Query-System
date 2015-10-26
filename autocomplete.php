@@ -23,6 +23,6 @@ foreach ($list as $rs) {
 	//put text in bold
 	$description = str_replace($_POST['keyword'], '<b>'.$_POST['keyword'].'</b>', $rs['description']);
 	//echo options
-    echo '<li id="question_list_single" onclick= "set_item(\''.$rs['questionCode'].'\');addMore(' . "'" . $rs['questionCode'] . "'" .')" >'. $rs['category'] . " - " . $description . '</li>';
+    echo '<li class="list-group-item" id="question_list_single" onclick= "set_item(\''.$rs['questionCode'].'\');addMore(' . "'" . $rs['questionCode'] . "'" .')" >'. $rs['category'] . " - " . $description . '</li>';
 }
 ?>

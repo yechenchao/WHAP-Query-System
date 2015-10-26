@@ -18,7 +18,6 @@ header("location:login.php");
     <link href="bootstrap-3.3.5/css/bootstrap-theme.min.css" rel="stylesheet">
 	<script type="text/javascript" src="//code.jquery.com/jquery-2.1.1.js"></script>
 	<script type="text/javascript" src="bootstrap-3.3.5/js/bootstrap.min.js"></script>
-	<script type="text/javascript" src="js/script.js"></script>
 	<script type="text/javascript" src="js/jquery.cookie.js"></script>
 	<script type="text/javascript" src="//code.jquery.com/ui/1.11.1/jquery-ui.js"></script>
 	<script type="text/javascript">
@@ -36,7 +35,7 @@ header("location:login.php");
 
 		//Adding textbox
 		function addMore(str) {
-			$("<DIV>").load("input.php?questionCode="+ str, function() {
+			$("<div>").load("input.php?questionCode="+ str, function() {
 				//Append textbox
 				$("#varialbeBox").append($(this).html());
 			});	
@@ -44,7 +43,7 @@ header("location:login.php");
 
 		//Deleting textbox
 		function deleteRow() {
-			$('DIV.item').each(function(index, item){
+			$('div.item').each(function(index, item){
 				jQuery(':checkbox', this).each(function () {
 					//Delete checked textboxes
 		            if ($(this).is(':checked')) {
@@ -56,7 +55,7 @@ header("location:login.php");
 
 		//Clear textbox
 		function clearRow() {
-			$('DIV.item').each(function(index, item){
+			$('div.item').each(function(index, item){
 				//Delete all textboxes
 				jQuery(':checkbox', this).each(function () {
 					$(item).remove();
@@ -75,6 +74,32 @@ header("location:login.php");
 
 		};
 
+		// autocomplete : this function will be executed every time we change the text
+		function autocomplet() {
+			var keyword = $('#variable_code').val();
+			if (keyword != ''){
+				$.ajax({
+					url: 'autocomplete.php',
+					type: 'POST',
+					data: {keyword:keyword},
+					success:function(data){
+						$('#question_list').show();
+						$('#question_list').html(data);
+					}
+				});
+			} else {
+				$('#question_list').hide();
+			}
+		}
+
+		// set_item : this function will be executed when we select an item
+		function set_item(item) {
+			// change input value
+			$('#variable_code').val('');
+			// hide proposition list
+			$('#question_list').hide();
+		}
+
 		//Load js functions when the page finishes download
 		$(document).ready(function()
 		{
@@ -83,7 +108,7 @@ header("location:login.php");
 			$("#varialbeBox").html(variableBox);
 
 			//When the category is clicked
-			$(".category").change(function()
+			$("#cat-select1").change(function()
 			{
 				//Assign selected value to variable
 				var category=$(this).val();
@@ -98,13 +123,13 @@ header("location:login.php");
 					//If success, update select list varSelect
 					success: function(html)
 						{
-							$(".varSelect").html(html);
+							$("#cat-select2").html(html);
 						} 
 				});
 			});
 
 			//When the variable list is clicked
-			$(".varSelect").change(function()
+			$("#cat-select2").change(function()
 			{
 				//Assign selected value to variable
 				var varSelect=$(this).val();
@@ -143,9 +168,16 @@ header("location:login.php");
 			</div>
 			<div id="navbar" class="navbar-collapse collapse">
 				<!-- Logout button -->
-				<form class="navbar-form navbar-right" action="logout.php">
-					<button type="submit" class="btn btn-primary">Sign Out</button>
-				</form>
+				<div class="navbar-form navbar-right">
+					<div class="form-group">
+						<button class="btn btn-primary">Help</button>
+					</div>
+					<div class="form-group">
+						<form action="logout.php">
+							<button class="btn btn-primary">Sign Out</button>
+						</form>
+					</div>
+				</div>
 			</div>
 		</div>
 	</nav>
@@ -153,23 +185,24 @@ header("location:login.php");
 		<div id="tab-container" class="container">
 		  <!-- Nav tabs -->
 		  <ul class="nav nav-tabs" role="tablist">
-		    <li role="presentation" class="active"><a href="#english" aria-controls="english" role="tab" data-toggle="tab">Search by English description</a></li>
+		    <li role="presentation" class="active"><a href="#english" aria-controls="english" role="tab" data-toggle="tab">Search by description</a></li>
 		    <li role="presentation"><a href="#category" aria-controls="profile" role="tab" data-toggle="tab">Select by category</a></li>
 		  </ul>
 		  <!-- Tab panes -->
 		  <div class="tab-content">
 		    <div role="tabpanel" class="tab-pane active" id="english">
 			    <div class="input_container">
-			    	<div class="input-group">
-				        <input type="text" placeholder="Enter your question" class="form-control" id="variable_code" onkeyup="autocomplet()"  aria-describedby="sizing-addon2">
-				        <ul class="autocomplete" id="question_list"></ul>
+			    	<div class="input-group input-group-lg">
+			    		<span class="input-group-addon"></span> 
+				        <input type="text" class="form-control" placeholder="Enter your question" id="variable_code" onkeyup="autocomplet()">
+				        <ul class="list-group" id="question_list"></ul>
 			        </div>
 			    </div>
 		    </div>
 		    <div role="tabpanel" class="tab-pane" id="category">
 			  	<div id="selector_container">
 			  		<!-- Select list for category list  -->
-					<select id="cat-select" name="category" class="category" multiple="multiple">
+					<select id="cat-select1" name="category" class="form-control" multiple="multiple">
 					<?php
 						$con=mysqli_connect('localhost',"root","root","whap");
 						$cateResults = mysqli_query($con,"select category from variableCategory");
@@ -180,55 +213,63 @@ header("location:login.php");
 					 		} 
 				 	?>
 					</select>
+
 					<!-- Select list for variables  -->
-					<select id = "cat-resizable" name="varSelect" class="varSelect" multiple="multiple">
+					<select id="cat-select2" name="varSelect" class="form-control" multiple="multiple">
 					</select>
 					<!-- Div for displaying button of adding variables -->
 					<div name="result" class="result"></div>
 				</div>
 		    </div>
 		  </div>
-	  </div>
+	  	</div>
+	  	<div class="container">
+		  	<!-- Form for posting variable list  -->
+			<form method="post">
+				<div class="container">
+					<div class="row col">
+						<!--  Function buttons -->
+						<input class="btn btn-default" type="button" name="add_item" value="Add a Blank Search Box" onClick="addMore('');"/>
+						<input class="btn btn-default" type="button" name="del_item" value="Delete Search Box" onClick="deleteRow();"/>
+						<input class="btn btn-default" type="button" name="clear_item" value="Clear Search Box" onClick="clearRow();"/>
+					</div>
+					<div class="row col">
+						<input class="btn btn-primary" type="submit" name="time_series" onclick="setCookie()" value="Time Series Query"/>
+						<input class="btn btn-primary" type="submit" name="patient_trajectory" onclick="setCookie()" value="Patient Trajectory Query"/>
+						<?php
+						//Set current timezone
+						date_default_timezone_set("Australia/Melbourne");
+
+						//Save cureent timestamp to name files(e.g. csv, tsv)
+						$timestamp = date('d-m-Y_H-i-s');
+						$csvName = 'csv/'. $timestamp . '.csv';
+						$tsvName = 'tsv/'. $timestamp . '.tsv';
+
+						//Generate button html codes for download csv and histogram with dynamic filenames
+						$downloadButton = '<input class="btn btn-primary" type="button" value="Download CSV File" onclick="window.open(' . "'" . $csvName . "'" . ')" /> ';
+						$histogram = '<input class="btn btn-primary" type="button" value="View Histogram" onclick="window.open(' . "'histogram.php?tsv=" . $timestamp . "'" . ')" />';
+
+						//Echo buttons
+						echo $downloadButton;
+						echo $histogram;
+						?>
+					</div>
+					<div class="row" id="SearchBoxSet">
+						<div id = "textbox_header" class="item float-clear">
+							<span>Variables Search Box: </span>
+						</div>
+						<!-- Div for appending textboxes  -->
+						<div id = "varialbeBox">
+						</div>
+					</div>
+				</div>
+			</form>
+	  	</div>
 	</div>
 
-	<div class="body">
-		<!-- Form for posting variable list  -->
-		<form method="post">
-			<!-- Div for variable search textboxes  -->
-			<div id = "SearchBoxSet">
-				<div id = "textbox_header" class="item float-clear">
-					<h3>Variables Search Box: </h3>
-				</div>
-
-				<!-- Div for appending textboxes  -->
-				<div id = "varialbeBox">
-				</div>
-			</div>
-
-			<div class="btn-action float-clear">
-				<!--  Function buttons -->
-				<input type="button" name="add_item" value="Add Search Box" onClick="addMore('');" />
-				<input type="button" name="del_item" value="Delete Search Box" onClick="deleteRow();" />
-				<input type="button" name="clear_item" value="Clear Search Box" onClick="clearRow();" />
-				<input type="submit" name="time_series" onclick="setCookie()" value="Time Series Query" />
-				<input type="submit" name="patient_trajectory" onclick="setCookie()" value="Patient Trajectory Query" />
+	<div>
+		<div class="container">
 			<?php
-				//Set current timezone
-				date_default_timezone_set("Australia/Melbourne");
-
-				//Save cureent timestamp to name files(e.g. csv, tsv)
-				$timestamp = date('d-m-Y_H-i-s');
-				$csvName = 'csv/'. $timestamp . '.csv';
-				$tsvName = 'tsv/'. $timestamp . '.tsv';
-
-				//Generate button html codes for download csv and histogram with dynamic filenames
-				$downloadButton = '<input type="button" value="Download CSV File" onclick="window.open(' . "'" . $csvName . "'" . ')" />';
-				$histogram = '<input type="button" value="View Histogram" onclick="window.open(' . "'histogram.php?tsv=" . $timestamp . "'" . ')" />';
-
-				//Echo buttons
-				echo $downloadButton;
-				echo $histogram;
-
 				//If time series button is clicked	
 				if(!empty($_POST["time_series"])) {
 
@@ -274,7 +315,7 @@ header("location:login.php");
 						$csv = fopen($csvName, "w");
 						
 						//Start creating result table
-						echo '<div class="ResultTable"><table><tr><td>Serial</td><td>Layer</td>';
+						echo '<div class="ResultTable"><table class="table table-hover"><tr><td>Serial</td><td>Layer</td>';
 
 						//Start writing data to csv file
 						fwrite($csv, "Serial,Layer");
@@ -394,7 +435,7 @@ header("location:login.php");
 					if($itemCount != null){
 						$varCount = 0;
 						$csv = fopen($csvName, "w");
-						echo '<div class="ResultTable"><table><tr><td>Serial</td>';
+						echo '<div class="ResultTable"><table class="table table-hover"><tr><td>Serial</td>';
 						fwrite($csv, "Serial,");
 
 						//Start creating SQL statement
@@ -501,9 +542,14 @@ header("location:login.php");
 					}
 				}
 			?>
-			</div>
-		</form>
+		</div>
 	</div>
 
+	<div class="container">
+		<hr>
+		<footer>
+			Created by Peter Ye under <a href="#" target="_blank">The MIT License</a>
+		</footer>
+	</div>
 </body>
 </html>
