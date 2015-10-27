@@ -31,6 +31,11 @@
 				<button type="submit" class="btn btn-lg btn-block btn-primary">Sign in</button>
 			</form>
 		</div>
+		<div style = "position:absolute; left: 10px; bottom:10px;" class="container">
+			<footer>
+				Created by Peter Yeah under <a href="https://github.com/yechenchao/WHAP/blob/master/LICENSE" target="_blank">The MIT License</a>
+			</footer>
+		</div>
 
 	</body>
 </html>

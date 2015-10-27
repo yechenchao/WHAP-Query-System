@@ -544,7 +544,7 @@ header("location:login.php");
 	<div class="container">
 		<hr>
 		<footer>
-			Created by Peter Yeah under <a href="#" target="_blank">The MIT License</a>
+			Created by Peter Yeah under <a href="https://github.com/yechenchao/WHAP/blob/master/LICENSE" target="_blank">The MIT License</a>
 		</footer>
 	</div>
 </body>
