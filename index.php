@@ -12,10 +12,10 @@ header("location:login.php");
 <html lang="en">
 <head>
 	<title>WHAP Query System</title>
-	<link rel="stylesheet" href="css/style.css" />
+	<link rel="stylesheet" href="css/style.css">
 	<link rel="stylesheet" href="//code.jquery.com/ui/1.11.1/themes/smoothness/jquery-ui.css">
 	<link rel="stylesheet" href="bootstrap-3.3.5/css/bootstrap.min.css">
-    <link href="bootstrap-3.3.5/css/bootstrap-theme.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="bootstrap-3.3.5/css/bootstrap-theme.min.css">
 	<script type="text/javascript" src="//code.jquery.com/jquery-2.1.1.js"></script>
 	<script type="text/javascript" src="bootstrap-3.3.5/js/bootstrap.min.js"></script>
 	<script type="text/javascript" src="js/jquery.cookie.js"></script>
