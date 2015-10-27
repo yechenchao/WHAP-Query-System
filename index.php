@@ -170,9 +170,6 @@ header("location:login.php");
 				<!-- Logout button -->
 				<div class="navbar-form navbar-right">
 					<div class="form-group">
-						<button class="btn btn-primary">Help</button>
-					</div>
-					<div class="form-group">
 						<form action="logout.php">
 							<button class="btn btn-primary">Sign Out</button>
 						</form>
@@ -547,7 +544,7 @@ header("location:login.php");
 	<div class="container">
 		<hr>
 		<footer>
-			Created by Peter Ye under <a href="#" target="_blank">The MIT License</a>
+			Created by Peter Yeah under <a href="#" target="_blank">The MIT License</a>
 		</footer>
 	</div>
 </body>
