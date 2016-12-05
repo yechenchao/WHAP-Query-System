@@ -325,7 +325,8 @@ header("location:login.php");
 						for($i=0; $i<$itemCount; $i++) {
 
 							$variable = $_POST["item_name"][$i];
-							$dataTypeSql = "SELECT valueType FROM questionCode_description WHERE questionCode = '" . $variable . "'";
+							$dataTypeSql = "SELECT valueType FROM questionCode_description WHERE questionCode = '"
+                                . $variable . "'";
 							$dataTypeResult = mysqli_fetch_array(mysqli_query($con,"$dataTypeSql"));
 
 							$SQL_Header .= ", ";
@@ -335,7 +336,8 @@ header("location:login.php");
 								echo "<td>" . $variable . "</td>";
 								fwrite($csv, ",".$variable);
 								$SQL_Header .= 'T1.' . $variable;
-								$SQL_Body .= "GROUP_CONCAT(IF(questionCode='" . $variable . "',DATE_FORMAT(answerDate,'%d-%m-%Y'),NULL)) AS " . $variable;
+								$SQL_Body .= "GROUP_CONCAT(IF(questionCode='" . $variable .
+                                    "',DATE_FORMAT(answerDate,'%d-%m-%Y'),NULL)) AS " . $variable;
 							}
 							//When data type is MCQ
 							else if($dataTypeResult[0] == 2){
@@ -347,8 +349,10 @@ header("location:login.php");
 								fwrite($csv, ",".$variable."_Value");
 								$SQL_Header .= 'T1.' . $variable . ', ';
 								$SQL_Header .= $variable . '.value';
-								$SQL_Body .= "SUM(IF(questionCode='" . $variable . "',answerNumeric,NULL)) AS " . $variable;
-								$SQL_Footer .= 'INNER JOIN questionCode_value ' . $variable . ' ON (T1.' . $variable . '='. $variable . '.valueCode AND ' . $variable . ".questionCode = '" . $variable . "') ";
+								$SQL_Body .= "SUM(IF(questionCode='" . $variable . "',answerNumeric,NULL)) AS "
+                                    . $variable;
+								$SQL_Footer .= 'INNER JOIN questionCode_value ' . $variable . ' ON (T1.' . $variable .
+                                    '='. $variable . '.valueCode AND ' . $variable . ".questionCode = '" . $variable . "') ";
 							
 							}
 							//When data type is numberic
@@ -356,14 +360,16 @@ header("location:login.php");
 								echo "<td>" . $variable . "</td>";
 								fwrite($csv, ",".$variable);
 								$SQL_Header .= 'T1.' . $variable;
-								$SQL_Body .= "SUM(IF(questionCode='" . $variable . "',answerNumeric,NULL)) AS " . $variable;
+								$SQL_Body .= "SUM(IF(questionCode='" . $variable . "',answerNumeric,NULL)) AS "
+                                    . $variable;
 							}
 							//When data type is string
 							else{
 								echo "<td>" . $variable . "</td>";
 								fwrite($csv, ",".$variable);
 								$SQL_Header .= 'T1.' . $variable;
-								$SQL_Body .= "GROUP_CONCAT(IF(questionCode='" . $variable . "',answerString,NULL)) AS " . $variable;
+								$SQL_Body .= "GROUP_CONCAT(IF(questionCode='" . $variable . "',answerString,NULL)) AS "
+                                    . $variable;
 							}
 						}
 						//The whole line finishes, add new line to csv
@@ -459,7 +465,8 @@ header("location:login.php");
 									echo "<td>" . $variable . "</td>";
 									fwrite($csv, $variable . ",");
 									$SQL_Header .= ',T1.' . $variable;
-									$SQL_Body .= ",MIN(IF(questionCode='" . $variable . "',DATE_FORMAT(answerDate,'%d-%m-%Y'),NULL)) AS " . $variable;
+									$SQL_Body .= ",MIN(IF(questionCode='" . $variable
+                                        . "',DATE_FORMAT(answerDate,'%d-%m-%Y'),NULL)) AS " . $variable;
 								}
 								else{
 									while($layer = mysqli_fetch_array($layers)){
@@ -467,7 +474,9 @@ header("location:login.php");
 										echo "<td>" . $layer['layer'] . "_" . $variable . "</td>";
 										fwrite($csv, $layer['layer'] . "_" . $variable . ",");
 										$SQL_Header .= ',T1.' . $layer['layer'] . '_' . $variable;
-										$SQL_Body .= ",GROUP_CONCAT(IF(questionCode='" . $variable . "' AND layer = '" . $layer['layer'] . "',DATE_FORMAT(answerDate,'%d-%m-%Y'),NULL)) AS " . $layer['layer'] . '_' . $variable;
+										$SQL_Body .= ",GROUP_CONCAT(IF(questionCode='" . $variable . "' AND layer = '"
+                                            . $layer['layer'] . "',DATE_FORMAT(answerDate,'%d-%m-%Y'),NULL)) AS "
+                                            . $layer['layer'] . '_' . $variable;
 									}
 								}
 							}
@@ -484,9 +493,12 @@ header("location:login.php");
 
 									$SQL_Header .= ',T1.' . $layer['layer'] . '_' . $variable;
 									$SQL_Header .= ',' . $layer['layer'] . '_' . $variable . '.value';
-									$SQL_Body .= ",SUM(IF(questionCode='" . $variable . "' AND layer = '" . $layer['layer'] . "',answerNumeric,NULL)) AS " . $layer['layer'] . '_' . $variable;
+									$SQL_Body .= ",SUM(IF(questionCode='" . $variable . "' AND layer = '"
+                                        . $layer['layer'] . "',answerNumeric,NULL)) AS " . $layer['layer'] . '_' . $variable;
 									$newLayerVar = $layer['layer'] . '_' . $variable;
-									$SQL_Footer .= "LEFT OUTER JOIN questionCode_value " . $newLayerVar . " ON (T1." . $newLayerVar . "=" . $newLayerVar . ".valueCode AND " . $newLayerVar . ".questionCode = '" . $variable . "') ";
+									$SQL_Footer .= "LEFT OUTER JOIN questionCode_value " . $newLayerVar
+                                        . " ON (T1." . $newLayerVar . "=" . $newLayerVar . ".valueCode AND "
+                                        . $newLayerVar . ".questionCode = '" . $variable . "') ";
 								
 								}
 							}
@@ -497,7 +509,8 @@ header("location:login.php");
 									echo "<td>" . $layer['layer'] . "_" . $variable . "</td>";
 									fwrite($csv,$layer['layer'] . "_" . $variable . ',');
 									$SQL_Header .= ',T1.' . $layer['layer'] . '_' . $variable;
-									$SQL_Body .= ",SUM(IF(questionCode='" . $variable . "' AND layer = '" . $layer['layer'] . "',answerNumeric,NULL)) AS " . $layer['layer'] . '_' . $variable;
+									$SQL_Body .= ",SUM(IF(questionCode='" . $variable . "' AND layer = '"
+                                        . $layer['layer'] . "',answerNumeric,NULL)) AS " . $layer['layer'] . '_' . $variable;
 								}
 							}
 							//when data type is string
@@ -507,7 +520,8 @@ header("location:login.php");
 									echo "<td>" . $layer['layer'] . "_" . $variable . "</td>";
 									fwrite($csv,$layer['layer'] . "_" . $variable . ',');
 									$SQL_Header .= ',T1.' . $layer['layer'] . '_' . $variable;
-									$SQL_Body .= ",GROUP_CONCAT(IF(questionCode='" . $variable . "' AND layer = '" . $layer['layer'] . "',answerString,NULL)) AS " . $layer['layer'] . '_' . $variable;
+									$SQL_Body .= ",GROUP_CONCAT(IF(questionCode='" . $variable . "' AND layer = '"
+                                        . $layer['layer'] . "',answerString,NULL)) AS " . $layer['layer'] . '_' . $variable;
 								}
 							}
 						}

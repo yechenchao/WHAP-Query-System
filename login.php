@@ -41,7 +41,7 @@
 </html>
 <?php 
 	//Pop out alert when username or password is wrong
-	if($_GET['info'] == '1'){
+	if($_GET['login'] == 'false'){
 		echo "<script type='text/javascript'>alert('Wrong username or password, please try again');</script>";
 	}
 ?>

@@ -27,7 +27,7 @@ if($result1['identifier'] == '1'){
 }
 //if username and password do not match, echo notification
 else {
-	header("location:login.php?info=1");
+	header("location:login.php?login=false");
 }
 ob_end_flush();
 ?>
