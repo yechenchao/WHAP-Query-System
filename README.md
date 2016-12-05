@@ -8,4 +8,6 @@ WHAP stands for The Women's Healthy Ageing Project, which is a prospective, long
 
 ## Copyright and license
 
-All code and documentation copyright reserved by Peter Ye. Code and documentation released under [the MIT license](https://github.com/yechenchao/WHAP/blob/master/LICENSE).
+All code and documentation copyright reserved by Peter Ye. 
+
+Code and documentation released under [the MIT license](https://github.com/yechenchao/WHAP/blob/master/LICENSE).
